@@ -1,0 +1,16 @@
+{
+  "name": "alvarez-barrientos-giacomini_dwm4ap-ah-parcial2",
+  "version": "1.0.0",
+  "description": "parcial 2: Alvarez, Barrientos y Giacomini",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Albagi",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "mongoose": "^8.19.3"
+  }
+}

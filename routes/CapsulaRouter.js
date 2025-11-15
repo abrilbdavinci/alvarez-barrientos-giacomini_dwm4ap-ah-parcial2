@@ -1,12 +1,12 @@
 import express from 'express';
-import { newCapsula, listCapsulas, getCapsulaById, deleteCapsulaById, updateCapsulaById, getCapsulaByNombre } from '../controllers/CapsulaController.js';
+import { newProducto, listProductos, getProductoById, deleteProductoById, updateProductoById, getProductoByNombre } from '../controllers/ProductoController.js';
 const router = express.Router();
 
-router.get('/', listCapsulas);
-router.get('/:id', getCapsulaById);
-router.get('/nombre/:nombre', getCapsulaByNombre);
-router.post('/', newCapsula);
-router.delete('/:id', deleteCapsulaById );
-router.put('/:id', updateCapsulaById);
+router.get('/', listProductos);
+router.get('/:id', getProductoById);
+router.get('/nombre/:nombre', getProductoByNombre);
+router.post('/', newProducto);
+router.delete('/:id', deleteProductoById );
+router.put('/:id', updateProductoById);
 
 export default router;

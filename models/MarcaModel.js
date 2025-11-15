@@ -4,11 +4,10 @@ const Schema = mongoose.Schema;
 
 const esquema = new Schema({
     nombre: String,
-    tipo: String,
-    desc: String
+    origen: String
 });
 
-const Maquina = mongoose.model('Maquina', esquema);
+const Marca = mongoose.model('Marca', esquema);
 
 
-export default Maquina;
+export default Marca;

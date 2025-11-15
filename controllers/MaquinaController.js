@@ -1,58 +1,58 @@
-import Maquina from '../models/MaquinaModel.js'
+import Marca from '../models/MarcaModel.js'
 
-const newMaquina = async( request, response ) =>{
-    const {nombre, tipo, desc} = request.body;
-    const maquina = new Maquina({nombre, tipo, desc});
-    const data = await maquina.save();
-    response.status(201).json({ msg:"Maquina creada", data});
+const newMarca = async( request, response ) =>{
+    const {nombre, origen} = request.body;
+    const marca = new Marca({nombre, origen});
+    const data = await marca.save();
+    response.status(201).json({ msg:"Marca creada", data});
 }
 
-const listMaquinas = async (request, response) =>{
-    const maquinas = await Maquina.find();
-    response.json(maquinas);
+const listMarcas = async (request, response) =>{
+    const marcas = await Marca.find();
+    response.json(marcas);
 }
 
-const getMaquinaById = async (request, response) => {
+const getMarcaById = async (request, response) => {
     const id = request.params.id;
-    const maquina = await Maquina.findById(id);
-    if( maquina){
-        response.status(200).json({data: maquina});
+    const marca = await Marca.findById(id);
+    if( marca){
+        response.status(200).json({data: marca});
     } else {
-        response.status(404).json({msg: 'maquina no encontrada'});
+        response.status(404).json({msg: 'marca no encontrada'});
     }
 }
 
-const deleteMaquinaById = async( request, response) =>{
+const deleteMarcaById = async( request, response) =>{
     const id = request.params.id;
-    const maquina = await Maquina.findByIdAndDelete(id);
-    if ( maquina ){
-        response.status(200).json({msg:'Maquina Eliminada'});
+    const marca = await Marca.findByIdAndDelete(id);
+    if ( marca ){
+        response.status(200).json({msg:'Marca Eliminada'});
     } else {
-        response.status(404).json({msg: 'Maquina no encontrada'});
+        response.status(404).json({msg: 'Marca no encontrada'});
     }
 }
 
-const updateMaquinaById = async( request, response) =>{
+const updateMarcaById = async( request, response) =>{
     const id = request.params.id;
     const body = request.body;
 
-    const maquina = await Maquina.findByIdAndUpdate(id, body);
-    if ( maquina ){
-        response.status(200).json({msg:'Maquina Actualizada'});
+    const marca = await Marca.findByIdAndUpdate(id, body);
+    if ( marca ){
+        response.status(200).json({msg:'Marca Actualizada'});
     } else {
-        response.status(404).json({msg: 'Maquina no encontrada'});
+        response.status(404).json({msg: 'Marca no encontrada'});
     }
 }
 
-const getMaquinaByNombre = async (request, response) => {
+const getMarcaByNombre = async (request, response) => {
     const nombre = request.params.nombre.trim().toLowerCase();
-    const maquinas = await Maquina.find();
-    const maquinasXnombre = maquinas.filter(m => m.nombre.toLowerCase() === nombre);
-    if( maquinasXnombre.length > 0){
-        response.status(200).json({data: maquinasXnombre});
+    const marcas = await Marca.find();
+    const marcasXnombre = marcas.filter(m => m.nombre.toLowerCase() === nombre);
+    if( marcasXnombre.length > 0){
+        response.status(200).json({data: marcasXnombre});
     } else {
-        response.status(404).json({msg: 'Maquina no encontrada'});
+        response.status(404).json({msg: 'Marca no encontrada'});
     }
 }
 
-export { newMaquina, listMaquinas, getMaquinaById, deleteMaquinaById, updateMaquinaById, getMaquinaByNombre };
+export { newMarca, listMarcas, getMarcaById, deleteMarcaById, updateMarcaById, getMarcaByNombre };

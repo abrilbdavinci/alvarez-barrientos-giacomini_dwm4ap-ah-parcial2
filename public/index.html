@@ -9,7 +9,7 @@
     <link rel="shortcut icon" href="/favicon/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
     <link rel="manifest" href="/favicon/site.webmanifest" />
-    <title>Giacomini Martina - Parcial 1: Apps Híbridas</title>
+    <title>Alvarez, Barrientos y Giacomini - Parcial 2: Apps Híbridas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
@@ -24,8 +24,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-link" href="#productos">Cápsulas</a>
-            <a class="nav-link" href="#marcas">Máquinas</a>
+            <a class="nav-link" href="#productos">Productos</a>
+            <a class="nav-link" href="#marcas">Marcas</a>
             <a class="nav-link" href="#usuarios">Usuarios</a>
         </div>
         </div>
@@ -36,88 +36,88 @@
     <main class="container-fluid">
         <div class="d-flex justify-content-around align-items-center px-4">
             <div>
-                <h1 class="d-none">Nespresso API</h1>
-                <img src="img/nespressoapi-logo-black-big.png" alt="logo">
-                <p id="desc">Esta API pensada para gestionar cápsulas de café, máquinas y usuarios de Nespresso permite listar, buscar, agregar, editar y eliminar datos de manera sencilla.</p>
+                <h1 class="d-none"><i>Kälm</i> API</h1>
+                <img src="" alt="logo">
+                <p id="desc">Esta API pensada para gestionar productos, marcas y usuarios de <i>Kälm</i> permite listar, buscar, agregar, editar y eliminar datos de manera sencilla.</p>
             </div>
             <div class="mx-4">
-                <img src="img/2VIEWEspressoCup-Saucers-XL.avif" alt="coffee cups">
+                <img src="" alt="coffee cups">
             </div>
         </div>
         <section class="container-fluid px-5 my-5">
             <div class="px-5">
-                <h2 id="productos">Cápsulas</h2>
+                <h2 id="productos">Productos</h2>
                 <div class="card">
                     <h3 class="card-header">GET /api/productos</h3>
                     <div class="card-body">
-                        <p class="card-text">Listar todas las cápsulas.</p>
+                        <p class="card-text">Listar todas los productos.</p>
                     </div>
                 </div>
                 <div class="card">
                     <h3 class="card-header">GET /api/productos/:id</h3>
                     <div class="card-body">
-                        <p class="card-text">Buscar cápsula por ID.</p>
+                        <p class="card-text">Buscar producto por ID.</p>
                     </div>
                 </div>
                 <div class="card">
                     <h3 class="card-header">GET /api/productos/nombre/:nombre</h3>
                     <div class="card-body">
-                        <p class="card-text">Buscar cápsula por nombre.</p>
+                        <p class="card-text">Buscar producto por nombre.</p>
                     </div>
                 </div>
                 <div class="card">
                     <h3 class="card-header">POST /api/productos</h3>
                     <div class="card-body">
-                        <p class="card-text">Crear una nueva cápsula.</p>
+                        <p class="card-text">Crear un nuevo producto.</p>
                     </div>
                 </div>
                 <div class="card">
                     <h3 class="card-header">PUT /api/productos/:id</h3>
                     <div class="card-body">
-                        <p class="card-text">Actualizar una cápsula existente por ID.</p>
+                        <p class="card-text">Actualizar un producto existente por ID.</p>
                     </div>
                 </div>
                 <div class="card">
                     <h3 class="card-header">DELETE /api/productos/:id</h3>
                     <div class="card-body">
-                        <p class="card-text">Eliminar una cápsula por ID.</p>
+                        <p class="card-text">Eliminar un producto por ID.</p>
                     </div>
                 </div>
-                <h2 id="marcas">Máquinas</h2>
+                <h2 id="marcas">Marcas</h2>
                 <div class="card">
                     <h3 class="card-header">GET /api/marcas</h3>
                     <div class="card-body">
-                        <p class="card-text">Listar todas las máquinas.</p>
+                        <p class="card-text">Listar todas las marcas.</p>
                     </div>
                 </div>
                 <div class="card">
                     <h3 class="card-header">GET /api/marcas/:id</h3>
                     <div class="card-body">
-                        <p class="card-text">Buscar máquina por ID.</p>
+                        <p class="card-text">Buscar marca por ID.</p>
                     </div>
                 </div>
                 <div class="card">
                     <h3 class="card-header">GET /api/marcas/nombre/:nombre</h3>
                     <div class="card-body">
-                        <p class="card-text">Buscar máquina por nombre.</p>
+                        <p class="card-text">Buscar marca por nombre.</p>
                     </div>
                 </div>
                 <div class="card">
                     <h3 class="card-header">POST /api/marcas</h3>
                     <div class="card-body">
-                        <p class="card-text">Crear una nueva máquina.</p>
+                        <p class="card-text">Crear una nueva marca.</p>
                     </div>
                 </div>
                 <div class="card">
                     <h3 class="card-header">PUT /api/marcas/:id</h3>
                     <div class="card-body">
-                        <p class="card-text">Actualizar una máquina existente por ID.</p>
+                        <p class="card-text">Actualizar una marca existente por ID.</p>
                     </div>
                 </div>
                 <div class="card">
                     <h3 class="card-header">DELETE /api/marcas/:id</h3>
                     <div class="card-body">
-                        <p class="card-text">Eliminar una máquina por ID.</p>
+                        <p class="card-text">Eliminar una marca por ID.</p>
                     </div>
                 </div>
                 <h2 id="usuarios">Usuarios</h2>
@@ -163,8 +163,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <footer>
         <ul>
-            <li>Aplicaciones Híbridas: Parcial 1</li>
-            <li>Giacomini Martina</li>
+            <li>Aplicaciones Híbridas: Parcial 2</li>
+            <li>Alvarez, Barrientos y Giacomini</li>
         </ul>
         <ul>
             <li>Profesor Jonathan Emanuel Cruz</li>

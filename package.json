@@ -3,17 +3,17 @@
   "version": "1.0.0",
   "description": "parcial 2: Alvarez, Barrientos y Giacomini",
   "main": "index.js",
+  "type": "module",
   "scripts": {
+    "start": "node --watch index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Albagi",
+  "author": "Alvarez Barrientos Giacomini",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^6.0.0",
-    "dotenv": "^17.2.3",
+    "dotenv": "^17.2.1",
     "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "mongodb": "^7.0.0",
-    "mongoose": "^8.19.3"
+    "mongoose": "^8.18.0"
   }
 }
+

@@ -5,8 +5,11 @@ const Schema = mongoose.Schema;
 const esquema = new Schema({
     nombre: String,
     marca: String,
+    tipo: String,
     descripcion: String,
-    ingredientes: String
+    tags: [String],
+    activos: String,
+    formula: String
 });
 
 const Producto = mongoose.model('Producto', esquema);

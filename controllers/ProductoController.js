@@ -1,8 +1,8 @@
 import Producto from '../models/ProductoModel.js'
 
 const newProducto = async( request, response ) =>{
-    const {nombre, marca, descripcion, ingredientes} = request.body;
-    const producto = new Producto({nombre, marca, descripcion, ingredientes});
+    const {nombre, marca, tipo, descripcion, tags, activos, formula} = request.body;
+    const producto = new Producto({nombre, marca, tipo, descripcion, tags, activos, formula});
     const data = await producto.save();
     response.status(201).json({ msg:"producto creado", data});
 }

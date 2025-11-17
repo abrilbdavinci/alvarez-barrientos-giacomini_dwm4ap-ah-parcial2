@@ -1,12 +1,26 @@
+// routes/UsuarioRouter.js
 import express from 'express';
-import { newUser, listUsers, getUserById, deleteUserById, updateUserById, getUserByNombre } from '../controllers/UsuarioController.js';
+import {
+  newUser,
+  listUsers,
+  getUserById,
+  deleteUserById,
+  updateUserById,
+  getUserByNombre,
+  loginUser   // <-- asegurate de exportarlo desde el controller
+} from '../controllers/UsuarioController.js';
+
 const router = express.Router();
 
-router.get('/', listUsers);
-router.get('/:id', getUserById);
-router.get('/nombre/:nombre', getUserByNombre);
+/* Rutas públicas */
+router.post('/login', loginUser);   // LOGIN -> POST /api/usuarios/login
 router.post('/', newUser);
-router.delete('/:id', deleteUserById );
+router.get('/', listUsers);
+
+/* Rutas parametrizadas */
+router.get('/nombre/:nombre', getUserByNombre); // rutas estáticas/longform antes que ':id' si hay riesgo
+router.get('/:id', getUserById);
 router.put('/:id', updateUserById);
+router.delete('/:id', deleteUserById);
 
 export default router;

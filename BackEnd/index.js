@@ -1,11 +1,11 @@
 // BackEnd/index.js
 import dotenv from "dotenv";
-dotenv.config(); // cargar variables de entorno lo antes posible
+dotenv.config();
 
 import express from "express";
 import cors from "cors";
 
-import { connectDB } from "./config/dataBase.js"; // debe exportar connectDB()
+import { connectDB } from "./config/dataBase.js";
 import usuarioRouter from "./routes/UsuarioRouter.js";
 import productoRouter from "./routes/ProductoRouter.js";
 import marcaRouter from "./routes/MarcaRouter.js";
@@ -16,7 +16,21 @@ const PORT = Number(process.env.PORT) || 3000;
 
 /* -------------------------
    Middlewares globales
-app.use(cors()); // en dev permite todo; en prod configurá origenes
+   ------------------------- */
+// Habilitar CORS sólo para el frontend en desarrollo
+app.use(cors({
+  origin: "http://localhost:5173", // origen exacto (no usar '*' si usás cookies)
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  credentials: true,
+}));
+
+// Asegurar que las preflight OPTIONS respondan correctamente
+app.options('*', cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+}));
+
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
 
@@ -34,16 +48,14 @@ let server;
 
 async function startServer() {
   try {
-    // Intentamos conectar la base de datos
     await connectDB();
-    // Montamos routers después de conectar (opcional pero recomendable)
+
     app.use("/api/usuarios", usuarioRouter);
     app.use("/api/productos", productoRouter);
     app.use("/api/marcas", marcaRouter);
     app.use("/api/posts", postRouter);
 
-    // Handler simple de errores (middleware con 4 args)
-    // Se coloca después de las rutas
+    // Error handler
     // eslint-disable-next-line no-unused-vars
     app.use((err, req, res, next) => {
       console.error("Error handler:", err);
@@ -56,20 +68,18 @@ async function startServer() {
       res.status(404).json({ msg: "Endpoint no encontrado" });
     });
 
-    // Iniciar servidor
     server = app.listen(PORT, () => {
       console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
     });
   } catch (err) {
     console.error("Fallo al conectar a la base de datos (startServer):", err);
-    process.exit(1); // salir con error -> nodemon mostrará la falla
+    process.exit(1);
   }
 }
 
 /* -------------------------
    Manejo de señales y errores globales
    ------------------------- */
-// Cerrar el servidor y desconectar la DB de forma ordenada
 async function shutdownHandler(signal) {
   console.log(`\nRecibida señal ${signal}. Cerrando servidor...`);
   try {
@@ -79,7 +89,6 @@ async function shutdownHandler(signal) {
       });
       console.log("Servidor cerrado.");
     }
-    // Si usás mongoose, podés desconectarlo aquí:
     try {
       const mongoose = await import("mongoose");
       if (mongoose && mongoose.connection && mongoose.connection.readyState) {
@@ -87,7 +96,7 @@ async function shutdownHandler(signal) {
         console.log("Desconectado de MongoDB.");
       }
     } catch (e) {
-      // noop: si no usás mongoose o falla, no detenemos el shutdown
+      // noop
     }
     process.exit(0);
   } catch (err) {
@@ -101,17 +110,11 @@ process.on("SIGTERM", () => shutdownHandler("SIGTERM"));
 
 process.on("unhandledRejection", (reason, p) => {
   console.error("Unhandled Rejection at: Promise", p, "reason:", reason);
-  // opcional: shutdownHandler("unhandledRejection");
 });
 
 process.on("uncaughtException", (err) => {
   console.error("Uncaught Exception thrown:", err);
-  // Es recomendable reiniciar la app en producción.
-  // Aquí cerramos ordenadamente
   shutdownHandler("uncaughtException");
 });
 
-/* -------------------------
-   Start!
-   ------------------------- */
 startServer();

@@ -17,7 +17,6 @@ export default function Home() {
   const [error, setError] = useState(null);
 
   const [filter, setFilter] = useState("");
-  const [marcaFilter, setMarcaFilter] = useState("");
   const [tipoFilter, setTipoFilter] = useState("");
   const [sortKey, setSortKey] = useState("nombre");
   const [page] = useState(1);
@@ -125,19 +124,11 @@ export default function Home() {
         throw new Error(b.msg || b.error || res.statusText);
       }
       setMarcas((m) => m.filter((x) => (x._id || x.id) !== id));
-      setMarcaFilter((cur) => (cur === id ? "" : cur));
       alert("Marca eliminada");
     } catch (err) {
       console.error("deleteMarca", err);
       alert(err.message || "Error eliminando marca");
     }
-  }
-
-  // toggle filtro por marca
-  function handleMarcaClick(m) {
-    const idVal = m._id || m.id;
-    setMarcaFilter((cur) => (cur === idVal ? "" : idVal));
-    setTipoFilter("");
   }
 
   // productos filtrados y ordenados
@@ -154,13 +145,6 @@ export default function Home() {
       });
     }
 
-    if (marcaFilter) {
-      list = list.filter((p) => {
-        const marcaId = p.marca?._id || p.marca?.id;
-        return String(marcaId) === String(marcaFilter);
-      });
-    }
-
     if (tipoFilter) {
       const tf = tipoFilter.toLowerCase();
       list = list.filter((p) => (p.tipo || "").toLowerCase() === tf);
@@ -173,7 +157,7 @@ export default function Home() {
       if (sortKey === "precio") return (a.precio || 0) - (b.precio || 0);
       return 0;
     });
-  }, [productos, filter, marcaFilter, tipoFilter, sortKey]);
+  }, [productos, filter, tipoFilter, sortKey]);
 
   const totalItems = productosProcesados.length;
   const startIndex = (page - 1) * pageSize;
@@ -201,7 +185,6 @@ export default function Home() {
             value={tipoFilter}
             onChange={(e) => {
               setTipoFilter(e.target.value);
-              setMarcaFilter("");
             }}
           >
             <option value="">Todos los tipos</option>
@@ -250,34 +233,6 @@ export default function Home() {
         <aside style={{ width: 300, flexShrink: 0, display: "flex", flexDirection: "column", gap: 12 }}>
           <div className="card">
             <h4 style={{ marginBottom: 8 }}>Marcas</h4>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 10 }}>
-              <button type="button" className={`btn ${marcaFilter === "" ? "btn-primary" : "btn-ghost"}`} onClick={() => setMarcaFilter("")}>Todas</button>
-              {marcas.map((m) => {
-                const idVal = m._id || m.id;
-                const active = String(marcaFilter) === String(idVal);
-                return (
-                  <div key={idVal} style={{ display: "inline-flex", gap: 6, alignItems: "center" }}>
-                    <button
-                      type="button"
-                      className={`btn ${active ? "btn-primary" : "btn-ghost"}`}
-                      onClick={() => handleMarcaClick(m)}
-                    >
-                      {m.nombre}
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-ghost"
-                      style={{ padding: "6px 8px", border: "1px solid var(--kalm-border)", background: "transparent" }}
-                      onClick={() => deleteMarca(idVal)}
-                      title={`Eliminar ${m.nombre}`}
-                    >
-                      ✕
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-
             <div style={{ marginTop: 6 }}>
               <h4 style={{ marginBottom: 8 }}>Crear marca</h4>
               <Form
@@ -294,7 +249,7 @@ export default function Home() {
           </div>
 
           <div className="card">
-            <h4 style={{ marginBottom: 8 }}>Marcas - lista</h4>
+            <h4 style={{ marginBottom: 8 }}>Lista de marcas</h4>
             <ListSimple
               items={marcas}
               onDelete={deleteMarca}

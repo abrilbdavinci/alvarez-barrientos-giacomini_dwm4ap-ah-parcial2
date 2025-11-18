@@ -18,7 +18,7 @@ Este proyecto es una aplicación web que permite explorar productos y marcas pen
 ## Requisitos
 
 - Node.js >= 18
-- npm o yarn
+- npm
 - Backend API disponible en `http://localhost:3000/api`
 
 ---
@@ -34,8 +34,6 @@ cd <nombre-del-proyecto>
 2. **Instalar dependencias**:
 
 npm install
-# o
-yarn install
 
 3. **Generar archivo .env en la raíz de "BackEnd"*
 

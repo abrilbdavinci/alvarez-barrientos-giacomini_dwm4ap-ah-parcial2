@@ -1,275 +1,261 @@
-/* index.css
-   Hoja de estilos global — responsiva y accesible
-   - Tipografías fluidas con clamp()
-   - Grid flexible con auto-fit/minmax
-   - .row-list muestra máximo 2 columnas
-   - Utilities útiles (.flex-1, .no-select, .hidden, etc.)
+/* src/index.css
+   Estilos globales Kälm (sin Tailwind)
+   - No hay :hover (solo :focus-visible)
+   - Variables de tema en :root
+   - Clases reutilizables usadas por los componentes del proyecto
 */
 
-/* ========================
-   Variables y breakpoints
-   ======================== */
+/* -------------------------
+   Variables de color / tema
+   ------------------------- */
 :root{
-  --bg: #f6f7fb;
-  --card: #ffffff;
-  --text: #0f1724;
-  --muted: #6b7280;
-  --accent: #29989c;
-  --accent-2: #48e7da;
-  --success: #10b981;
-  --danger: #ef4444;
-  --radius: 10px;
-  --shadow: 0 6px 18px rgba(16,24,40,0.06);
-  --glass: rgba(255,255,255,0.6);
-  --max-w: 1440px;
-  --gap: 14px;
-  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
-
-  /* breakpoints (valores usados en media queries) */
-  --bp-lg: 1200px;
-  --bp-md: 980px;
-  --bp-sm: 640px;
+  --kalm-bg: #f6fbfc;
+  --kalm-surface: #ffffff;
+  --kalm-primary: #346b72;
+  --kalm-primary-weak: #5aa6c3;
+  --kalm-accent: #7dd3fc;
+  --kalm-text: #0f1724;
+  --kalm-muted: #64748b;
+  --kalm-border: #e6eef2;
+  --kalm-danger: #ef4444;
+  --kalm-radius: 10px;
+  --kalm-shadow: 0 8px 24px rgba(10,25,40,0.06);
+  --kalm-container: 1100px;
+  --kalm-gap: 12px;
+  --kalm-transition: none;
+  --kalm-font: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
 
-/* ========================
-   Reset / Base
-   ======================== */
+/* -------------------------
+   Reset / base
+   ------------------------- */
 * { box-sizing: border-box; }
 html, body, #root { height: 100%; }
-html {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  /* tamaño base escalable: entre ~14px y ~18px */
-  font-size: clamp(14px, 1.02vw + 0.6rem, 18px);
-}
 body {
+  padding-bottom: 60px;
   margin: 0;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  background: linear-gradient(180deg, var(--bg) 0%, #eef2f7 100%);
-  color: var(--text);
-  line-height: 1.45;
+  background: var(--kalm-bg);
+  color: var(--kalm-text);
+  font-family: var(--kalm-font);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-touch-callout: none;
+  line-height: 1.45;
+  font-size: 16px;
 }
 
-/* No bloquear selección globalmente — mejor usar .no-select cuando haga falta */
-.no-select { -webkit-user-select: none; -moz-user-select: none; user-select: none; }
+/* Headings */
+h1,h2,h3,h4 { margin: 0 0 0.5rem 0; color: var(--kalm-text); font-weight: 700; }
+p { margin: 0 0 1rem 0; color: var(--kalm-text); }
 
-/* ========================
-   Contenedor principal
-   ======================== */
-.app-root {
-  width: calc(100% - 32px);     /* espacio lateral mínimo */
-  max-width: var(--max-w);
-  margin: 20px auto;
+/* Links */
+a { color: var(--kalm-primary); text-decoration: none; }
+a:focus-visible { outline: 3px solid color-mix(in srgb, var(--kalm-primary) 18%, transparent); outline-offset: 3px; border-radius: 6px; }
+
+/* Utility text */
+.muted { color: var(--kalm-muted); }
+.mini { font-size: 0.8rem; color: var(--kalm-muted); }
+
+/* -------------------------
+   Layout helpers
+   ------------------------- */
+.container {
+  max-width: var(--kalm-container);
+  margin: 0 auto;
   padding: 16px;
 }
 
-/* ========================
-   Tipografía
-   ======================== */
-h1 { font-size: clamp(1.25rem, 2.4vw, 2.2rem); margin: 0 0 .5rem 0; line-height: 1.1; }
-h2 { font-size: clamp(1.05rem, 1.8vw, 1.6rem); margin: 0 0 .5rem 0; line-height: 1.15; }
-h3 { font-size: clamp(.95rem, 1.2vw, 1.1rem); margin: 0 0 .5rem 0; }
-h4 { margin: 0 0 .5rem 0; }
+/* grid helpers */
+.row { display:flex; gap: var(--kalm-gap); align-items:center; }
+.col { display:flex; flex-direction:column; gap: var(--kalm-gap); }
 
-p { margin: 0 0 10px 0; color: #394152; }
-.small { font-size: .85rem; color: var(--muted); }
+/* small responsive grid */
+.grid-3 { display: grid; gap: 12px; grid-template-columns: 1fr; }
+@media (min-width: 768px) { .grid-3 { grid-template-columns: 1fr 1fr 320px; } }
 
-/* ========================
-   Utilidades Flex/Grid
-   ======================== */
-.row { display:flex; gap:var(--gap); align-items:center; }
-.col { display:flex; flex-direction:column; gap:8px; }
-.flex-1 { flex:1; min-width: 0; } /* min-width:0 evita overflow en hijos flex */
-.center { display:flex; align-items:center; justify-content:center; }
-
-.hidden { display:none !important; }
-.muted { color:var(--muted); font-size:14px; }
-
-/* ========================
-   Enlaces
-   ======================== */
-a { color: inherit; text-decoration: none; }
-a:hover { text-decoration: underline; }
-
-/* ========================
-   Botones
-   ======================== */
-.btn {
-  display: inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(15,23,36,0.06);
-  background: white;
-  cursor: pointer;
-  font-weight: 600;
-  transition: transform .06s ease, box-shadow .12s ease;
-  box-shadow: none;
-  font-size: 0.95rem;
-  line-height: 1;
-}
-.btn:active { transform: translateY(1px); }
-.btn:focus { outline: 3px solid rgba(31,142,241,0.14); outline-offset: 2px; }
-
-.btn.small { padding:6px 10px; font-size:0.9rem; }
-.btn.ghost { background:transparent; border:1px solid rgba(15,23,36,0.06); }
-.btn.primary { background: var(--accent); color: white; border-color: transparent; }
-.btn.green { background: var(--success); color: white; border-color: transparent; }
-.btn.red { background: var(--danger); color: white; border-color: transparent; }
-.btn.outline { background: transparent; border: 1px solid rgba(16,24,40,0.08); }
-
-/* ========================
-   Card
-   ======================== */
+/* -------------------------
+   Cards / surfaces
+   ------------------------- */
 .card {
-  background: var(--card);
-  border-radius: var(--radius);
+  background: var(--kalm-surface);
+  border: 1px solid var(--kalm-border);
+  border-radius: var(--kalm-radius);
   padding: 14px;
-  box-shadow: var(--shadow);
-  margin-bottom: 14px;
-  overflow: hidden; /* evita que contenido se salga */
+  box-shadow: var(--kalm-shadow);
 }
 
-/* ========================
-   Forms
-   ======================== */
-.form { display:flex; flex-direction:column; gap:10px; }
-.form .field { display:flex; flex-direction:column; gap:6px; min-width:0; }
-
-input[type="text"],
-input[type="email"],
-input[type="password"],
-textarea,
-select {
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid #e6e9ef;
-  background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(250,250,250,0.9));
-  font-size: 0.95rem;
-  color: var(--text);
-  width: 100%;
-  box-sizing: border-box;
-}
-textarea { min-height: 90px; resize: vertical; }
-input:focus, textarea:focus, select:focus {
-  outline: 3px solid rgba(31,142,241,0.12);
-  border-color: var(--accent-2);
-}
-
-/* ========================
-   Listas y filas de lista
-   ======================== */
-
-/* Contenedor que muestra la lista en hasta 2 columnas.
-   - auto-fit para que se ajuste al ancho disponible
-   - minmax minimal para evitar columnas demasiado pequeñas */
-.row-list {
-  display: grid;
-  gap: var(--gap);
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  align-items: start;
-}
-
-/* Forzamos máximo 2 columnas en pantallas medianas+ grandes */
-@media (min-width: calc(var(--bp-sm) + 1px)) {
-  .row-list {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Cada fila/ítem dentro de la lista */
-.list-row {
-  display: flex;
+/* header-card (special) */
+.header-card {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
   gap: 12px;
-  align-items: center;
-  padding: 12px;
-  border-radius: 10px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,250,0.98));
-  border: 1px solid rgba(15,23,36,0.03);
-  box-shadow: var(--shadow);
+  padding: 14px;
 }
 
-/* Si la fila tiene contenido que debe truncarse */
-.list-row .title {
-  font-weight: 600;
-  font-size: 0.98rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0; /* importante en flex */
+/* -------------------------
+   Navbar (clases usadas en Navbar.jsx)
+   ------------------------- */
+.k-nav {
+  width: 100%;
+  background: transparent;
+  border-bottom: 1px solid var(--kalm-border);
+  box-shadow: 0 1px 0 rgba(16,24,40,0.02);
+}
+.k-nav-inner {
+  max-width: var(--kalm-container);
+  margin: 0 auto;
+  padding: 10px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+}
+.k-left { display:flex; align-items:center; gap: 18px; }
+.k-brand { display:flex; flex-direction:column; text-decoration:none; color: var(--kalm-text); }
+.k-brand-title { font-weight:800; font-size:18px; color: var(--kalm-primary); }
+.k-brand-sub { font-size:11px; color:var(--kalm-muted); margin-top:2px; }
+.k-links { display:none; gap:12px; align-items:center; }
+.k-link {
+  text-decoration:none;
+  color: var(--kalm-text);
+  font-size:14px;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+.k-link.active { color: var(--kalm-primary); font-weight: 600; background: rgba(37,96,127,0.06); }
+
+/* actions */
+.k-actions { display:flex; gap:8px; align-items:center; }
+.k-btn { font-size:14px; padding:8px 12px; border-radius:8px; border:1px solid transparent; cursor:pointer; background: transparent; color: var(--kalm-text); }
+.k-btn-primary { background: var(--kalm-primary); color: #fff; border-color: transparent; box-shadow: 0 6px 18px rgba(37,96,127,0.12); }
+.k-btn-ghost { background: transparent; border: 1px solid var(--kalm-border); color: var(--kalm-text); }
+.k-user-btn { display:inline-flex; align-items:center; gap:8px; padding:6px 10px; }
+
+/* responsive nav */
+@media (min-width: 640px) { .k-links { display:flex; } }
+@media (max-width: 639px) {
+  .k-brand-sub { display:none; }
+  .k-links { display:none; }
 }
 
-/* detalles secundarios */
-.list-row .meta { font-size: 0.9rem; color: var(--muted); }
-
-/* ========================
-   Grid helpers (general)
-   ======================== */
-.grid-2 { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--gap); }
-.grid-3 {
-  display: grid;
-  gap: var(--gap);
-  align-items: start;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
-
-/* En pantallas grandes, si querés 2+1 (main/main/sidebar) */
-@media (min-width: calc(var(--bp-md) + 1px)) {
-  .grid-3 { grid-template-columns: 1fr 1fr minmax(220px, 320px); }
-}
-
-/* utilidad: elemento que ocupa toda la fila en grid */
-.full { grid-column: 1 / -1; }
-
-/* ========================
-   Imágenes y medios
-   ======================== */
-img, picture, video, svg {
-  max-width: 100%;
-  height: auto;
-  display: block;
+/* focus-visible accesible for buttons/links */
+.k-btn:focus-visible, .k-link:focus-visible, .k-user-btn:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--kalm-primary) 20%, transparent);
+  outline-offset: 3px;
   border-radius: 8px;
 }
 
-/* ========================
-   Responsive tweaks
-   ======================== */
-@media (max-width: var(--bp-md)) {
-  .app-root { padding: 14px; width: calc(100% - 28px); }
+/* -------------------------
+   Buttons genericos
+   ------------------------- */
+.btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:0.5rem 1rem; border-radius:8px; font-weight:600; border:1px solid transparent; cursor:pointer; background: var(--kalm-surface); }
+.btn-primary { background: var(--kalm-primary); color:#fff; border-color: transparent; box-shadow: 0 6px 18px rgba(37,96,127,0.12); }
+.btn-ghost { background: transparent; color: var(--kalm-text); border: 1px solid var(--kalm-border); }
+.btn-outline { background: transparent; color: var(--kalm-primary); border: 1px solid var(--kalm-primary); }
+.btn-danger { background: var(--kalm-danger); color: #fff; border-color: transparent; }
+
+/* focus */
+.btn:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--kalm-primary) 18%, transparent);
+  outline-offset: 3px;
+  border-radius: 8px;
 }
 
-@media (max-width: var(--bp-sm)) {
-  .btn { padding: 8px 10px; font-size: 0.95rem; }
-  .app-root { padding: 10px; width: calc(100% - 20px); margin: 12px auto; }
-  .card { padding: 12px; }
-  /* para móviles garantizamos 1 columna en la lista */
-  .row-list { grid-template-columns: 1fr !important; }
+/* disabled */
+.btn[disabled], .disabled { opacity: 0.6; cursor: not-allowed; box-shadow: none; }
+
+/* -------------------------
+   Product card (Card.jsx)
+   ------------------------- */
+.product-card { display:flex; flex-direction:column; gap:10px; overflow:hidden; background:var(--kalm-surface); border-radius: 8px; border:1px solid var(--kalm-border); padding:10px; }
+.card-body h4 { margin:0; font-size:1rem; }
+.card-actions { display:flex; gap:8px; margin-top:8px; }
+
+/* -------------------------
+   Formulario (Form.jsx)
+   ------------------------- */
+.form .field { display:flex; flex-direction:column; gap:6px; margin-bottom:12px; }
+.input, input, textarea, select { background: #fbfdff; border: 1px solid var(--kalm-border); border-radius:8px; padding:9px 10px; color: var(--kalm-text); min-height:38px; font-family:inherit; font-size:0.95rem; }
+textarea { min-height:120px; resize:vertical; padding:10px; }
+.form-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:8px; }
+
+/* focus-visible for inputs */
+.input:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--kalm-primary) 16%, transparent);
+  outline-offset: 3px;
 }
 
-/* Muy pantallas pequeñas */
-@media (max-width: 360px) {
-  h1 { font-size: 1.05rem; }
-  .grid-3, .grid-2 { gap: 10px; }
+/* -------------------------
+   Home / Layout helpers
+   ------------------------- */
+.search-input { border-radius:10px; padding:8px 10px; border:1px solid var(--kalm-border); min-width:180px; background: white; }
+.select-filter { border-radius:10px; padding:7px 10px; border:1px solid var(--kalm-border); background:white; }
+
+/* skeletons */
+.skeleton-grid { display:grid; gap:12px; grid-template-columns: repeat(1,1fr); }
+@media (min-width:640px) { .skeleton-grid { grid-template-columns: repeat(2,1fr); } }
+@media (min-width:1024px) { .skeleton-grid { grid-template-columns: repeat(3,1fr); } }
+.skeleton-card { height:160px; background: linear-gradient(90deg,#f7fafc,#eef6f8); border-radius:8px; }
+
+/* -------------------------
+   Perfil / ListSimple styles
+   ------------------------- */
+.list-row { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 0; border-bottom: 1px solid var(--kalm-border); }
+.list-row:last-child { border-bottom: none; }
+
+/* -------------------------
+   Misc / small helpers
+   ------------------------- */
+.meta { color: var(--kalm-muted); font-size:0.9rem; }
+.mini { font-size:0.85rem; color:var(--kalm-muted); }
+
+/* spacing helpers */
+.p-4 { padding: 16px; }
+.mb-4 { margin-bottom: 16px; }
+
+/* -------------------------
+   Accessibility: forced focus-visible detection
+   ------------------------- */
+:focus { outline: none; }
+:focus-visible { outline-style: auto; }
+
+/* -------------------------
+   Print / small screens adjustments
+   ------------------------- */
+@media (max-width: 600px) {
+  .k-nav-inner { padding:10px; }
+  .container { padding: 12px; }
+  .grid-3 { grid-template-columns: 1fr; }
+  .card-media img { height: 140px; }
 }
 
-/* ========================
-   Accesibilidad: reduce motion
-   ======================== */
-@media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; animation: none !important; }
+/* ===== Footer fijo ===== */
+.kalm-footer {
+  background: var(--kalm-primary);
+  border-top: 1px solid var(--kalm-border);
+  color: var(--kalm-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  height: 60px;
+  z-index: 50;
+}
+/* -------------------------
+   Ajuste definitivo para imágenes de productos
+   ------------------------- */
+.card .card-media {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 8px;
 }
 
-/* ========================
-   Notas y recomendaciones
-   ========================
-   - Usa .row-list como wrapper donde mapeas tu array de items (productos/posts).
-     Ejemplo JSX: <div className="row-list">{items.map(i => <div className="list-row">...</div>)}</div>
-   - .list-row es la tarjeta/row de cada elemento.
-   - Si tienes tablas anchas, envuélvelas en un contenedor con overflow:auto para evitar romper el layout.
-   - Evita anchos fijos en los componentes hijos; usa flex y min-width:0 para prevenir overflow.
-*/
+.card .card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+

@@ -1,46 +1,76 @@
-import React, { useState } from "react";
+// src/components/Form.jsx
+import React, { useState, useEffect } from "react";
 
 export default function Form({ fields = [], onSubmit, submitLabel = "Enviar" }) {
   const initial = fields.reduce((acc, f) => ({ ...acc, [f.name]: f.default || "" }), {});
   const [form, setForm] = useState(initial);
 
+  useEffect(() => {
+    setForm(initial);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(fields)]);
+
   function handleChange(e) {
     const { name, value } = e.target;
-    setForm(s => ({ ...s, [name]: value }));
+    setForm((s) => ({ ...s, [name]: value }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    onSubmit(form);
-    // caller can reset if desired
+    if (typeof onSubmit === "function") await onSubmit(form);
   }
 
   return (
     <form className="form" onSubmit={handleSubmit}>
-      {fields.map(f => (
+      {fields.map((f) => (
         <div key={f.name} className="field">
-          <label>{f.label}</label>
+          <label htmlFor={f.name}>{f.label}</label>
+
           {f.type === "textarea" ? (
-            <textarea name={f.name} value={form[f.name]} onChange={handleChange} />
-<<<<<<< HEAD
+            <textarea
+              id={f.name}
+              name={f.name}
+              value={form[f.name] || ""}
+              onChange={handleChange}
+              className="input"
+            />
           ) : f.type === "select" ? (
-            <select name={f.name} value={form[f.name]} onChange={handleChange}>
-              <option value="">Seleccionar...</option>
-              {Array.isArray(f.options) && f.options.map(opt => (
-                <option key={opt.value || opt._id || opt} value={opt.value || opt._id || opt}>
-                  {opt.label || opt.nombre || opt}
-                </option>
-              ))}
+            <select
+              id={f.name}
+              name={f.name}
+              value={form[f.name] || ""}
+              onChange={handleChange}
+              className="input"
+            >
+              <option value="">{f.placeholder || "Seleccionar..."}</option>
+              {Array.isArray(f.options) &&
+                f.options.map((opt) => {
+                  const val = opt.value || opt._id || opt;
+                  const label = opt.label || opt.nombre || opt;
+                  return (
+                    <option key={val} value={val}>
+                      {label}
+                    </option>
+                  );
+                })}
             </select>
-=======
->>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
           ) : (
-            <input name={f.name} value={form[f.name]} onChange={handleChange} type={f.type || "text"} />
+            <input
+              id={f.name}
+              name={f.name}
+              type={f.type || "text"}
+              value={form[f.name] || ""}
+              onChange={handleChange}
+              className="input"
+            />
           )}
         </div>
       ))}
+
       <div className="form-actions">
-        <button className="btn primary" type="submit">{submitLabel}</button>
+        <button type="submit" className="btn btn-primary">
+          {submitLabel}
+        </button>
       </div>
     </form>
   );

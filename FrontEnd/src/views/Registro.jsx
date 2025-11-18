@@ -1,24 +1,18 @@
+// src/views/Registro.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-<<<<<<< HEAD
-import { apiFetch } from "../api";
-=======
 
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:3000/api";
->>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
 
 export default function Registro() {
   const [form, setForm] = useState({ nombre: "", email: "", password: "" });
   const [loading, setLoading] = useState(false);
-<<<<<<< HEAD
   const [error, setError] = useState("");
-=======
->>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
   const navigate = useNavigate();
 
   function handleChange(e) {
-    setForm(s => ({ ...s, [e.target.name]: e.target.value }));
-<<<<<<< HEAD
+    const { name, value } = e.target;
+    setForm((p) => ({ ...p, [name]: value }));
     setError("");
   }
 
@@ -27,74 +21,126 @@ export default function Registro() {
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) return "Email inválido.";
     if (form.password.length < 6) return "La contraseña debe tener al menos 6 caracteres.";
     return null;
-=======
->>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
-<<<<<<< HEAD
     setError("");
-    const validation = validateForm();
-    if (validation) {
-      setError(validation);
+    const v = validateForm();
+    if (v) {
+      setError(v);
       return;
     }
-    setLoading(true);
-    try {
-      await apiFetch("/usuarios/", {
-=======
+
     setLoading(true);
     try {
       const res = await fetch(`${API_BASE}/usuarios/`, {
->>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre: form.nombre, email: form.email, password: form.password })
+        body: JSON.stringify(form),
       });
-<<<<<<< HEAD
-      alert("Registro exitoso. Inicia sesión.");
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        const msg = data?.msg || data?.error || "Error en registro";
+        setError(msg);
+        return;
+      }
+
+      // registro ok -> redirigir a login
       navigate("/login");
+      // opcional: informar con alert
+      setTimeout(() => window.alert("Registro exitoso. Inicia sesión."), 50);
     } catch (err) {
       setError(err.message || "Error en registro");
-=======
-      const j = await res.json();
-      if (!res.ok) throw j;
-      alert("Registro exitoso. Inicia sesión.");
-      navigate("/login");
-    } catch (err) {
-      console.error("Registro error:", err);
-      alert(err.msg || err.message || "Error en registro");
->>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div>
-      <h2>Registro en Kälm</h2>
-<<<<<<< HEAD
-      {error && (
-        <div style={{ marginBottom: 12 }}>
-          <p style={{ color: "var(--danger, #ef4444)", margin: 0 }}>{error}</p>
-        </div>
-      )}
-      <form className="card form" onSubmit={handleSubmit} autoComplete="off">
-        <div className="field"><label>Nombre</label><input name="nombre" value={form.nombre} onChange={handleChange} autoComplete="name" /></div>
-        <div className="field"><label>Email</label><input name="email" type="email" value={form.email} onChange={handleChange} autoComplete="username" /></div>
-        <div className="field"><label>Contraseña</label><input name="password" type="password" value={form.password} onChange={handleChange} autoComplete="new-password" /></div>
-=======
-      <form className="card form" onSubmit={handleSubmit}>
-        <div className="field"><label>Nombre</label><input name="nombre" value={form.nombre} onChange={handleChange} /></div>
-        <div className="field"><label>Email</label><input name="email" type="email" value={form.email} onChange={handleChange} /></div>
-        <div className="field"><label>Contraseña</label><input name="password" type="password" value={form.password} onChange={handleChange} /></div>
->>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
+    <div style={{ maxWidth: 1120, margin: "28px auto", padding: 16 }}>
+      <div className="card" style={{ padding: 20 }}>
+        <h2 style={{ margin: 0, marginBottom: 8 }}>Registro en Kälm</h2>
+        <p className="muted" style={{ marginTop: 0, marginBottom: 12 }}>
+          Creá tu cuenta para comenzar a usar las rutinas y gestionar productos.
+        </p>
 
-        <div className="form-actions">
-          <button className="btn primary" type="submit" disabled={loading}>{loading ? "Registrando..." : "Registrarme"}</button>
-        </div>
-      </form>
+        {error && (
+          <div
+            role="alert"
+            className="card"
+            style={{
+              background: "rgba(239,68,68,0.06)",
+              border: "1px solid rgba(239,68,68,0.12)",
+              color: "var(--kalm-danger)",
+              marginBottom: 12,
+              padding: 10,
+            }}
+          >
+            {error}
+          </div>
+        )}
+
+        <form className="form" onSubmit={handleSubmit} autoComplete="off" aria-live="polite">
+          <div className="field">
+            <label htmlFor="nombre">Nombre</label>
+            <input
+              id="nombre"
+              name="nombre"
+              value={form.nombre}
+              onChange={handleChange}
+              className="input"
+              autoComplete="name"
+              required
+              aria-required="true"
+            />
+          </div>
+
+          <div className="field">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              value={form.email}
+              onChange={handleChange}
+              className="input"
+              autoComplete="username"
+              required
+              aria-required="true"
+            />
+          </div>
+
+          <div className="field">
+            <label htmlFor="password">Contraseña</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              value={form.password}
+              onChange={handleChange}
+              className="input"
+              autoComplete="new-password"
+              required
+              aria-required="true"
+            />
+            <div className="muted mini" style={{ marginTop: 6 }}>
+              Mínimo 6 caracteres.
+            </div>
+          </div>
+
+          <div style={{ display: "flex", gap: 10, alignItems: "center", marginTop: 6 }}>
+            <button type="submit" className="btn btn-primary" disabled={loading} style={{ minWidth: 140 }}>
+              {loading ? "Registrando..." : "Registrarme"}
+            </button>
+            <button type="button" className="btn btn-ghost" onClick={() => navigate("/login")} style={{ minWidth: 120 }}>
+              Ir a Iniciar sesión
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

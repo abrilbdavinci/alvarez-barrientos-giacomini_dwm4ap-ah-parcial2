@@ -11,25 +11,35 @@ import productoRouter from "./routes/ProductoRouter.js";
 import marcaRouter from "./routes/MarcaRouter.js";
 import postRouter from "./routes/PostRouter.js";
 
+
+const corsOrigin = process.env.CORS_ORIGIN || 'http://localhost:5173';
+
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
+
+
 
 /* -------------------------
    Middlewares globales
    ------------------------- */
 // Habilitar CORS sólo para el frontend en desarrollo
-app.use(cors({
-  origin: "http://localhost:5173", // origen exacto (no usar '*' si usás cookies)
-  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: corsOrigin, // origen exacto (no usar '*' si usás cookies)
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "Accept"],
+    credentials: true,
+  })
+);
 
 // Asegurar que las preflight OPTIONS respondan correctamente
-app.options('*', cors({
-  origin: "http://localhost:5173",
-  credentials: true,
-}));
+app.options(
+  "*",
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
@@ -59,26 +69,21 @@ async function startServer() {
     // eslint-disable-next-line no-unused-vars
     app.use((err, req, res, next) => {
       console.error("Error handler:", err);
-<<<<<<< HEAD
 
       // Middleware de manejo de errores global mejorado
       let status = err.status || 500;
       let message = err.message || "Error interno del servidor";
       // Si es error de validación de mongoose
-      if (err.name === 'ValidationError') {
+      if (err.name === "ValidationError") {
         status = 400;
         message = err.message;
       }
       // Si es error de objeto no encontrado
-      if (err.name === 'CastError') {
+      if (err.name === "CastError") {
         status = 404;
-        message = 'Recurso no encontrado';
+        message = "Recurso no encontrado";
       }
       res.status(status).json({ error: message });
-=======
-      const status = err.status || 500;
-      res.status(status).json({ msg: err.message || "Error interno del servidor" });
->>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
     });
 
     // 404 handler
@@ -87,7 +92,7 @@ async function startServer() {
     });
 
     server = app.listen(PORT, () => {
-      console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
+      console.log(`Servidor corriendo en puerto ${PORT}`);
     });
   } catch (err) {
     console.error("Fallo al conectar a la base de datos (startServer):", err);

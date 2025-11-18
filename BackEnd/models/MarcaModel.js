@@ -1,13 +1,11 @@
-import mongoose  from 'mongoose';
+// BackEnd/models/MarcaModel.js
+import mongoose from 'mongoose';
 
-const Schema = mongoose.Schema;
+const { Schema, model } = mongoose;
 
-const esquema = new Schema({
-    nombre: String,
-    origen: String
-});
+const MarcaSchema = new Schema({
+  nombre: { type: String, required: true, trim: true },
+  origen: { type: String, trim: true, default: '' }
+}, { timestamps: true });
 
-const Marca = mongoose.model('Marca', esquema);
-
-
-export default Marca;
+export default model('Marca', MarcaSchema); // colección: marcas

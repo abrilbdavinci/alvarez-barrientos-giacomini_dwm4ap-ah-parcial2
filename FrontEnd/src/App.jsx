@@ -1,5 +1,5 @@
 // src/App.jsx
-import "./App.css";
+
 import { Routes, Route } from "react-router-dom";
 
 import Home from "./views/Home";
@@ -9,7 +9,7 @@ import Login from "./views/Login";
 import Registro from "./views/Registro";
 import NotFound from "./views/NotFound";
 import Perfil from "./views/Perfil";
-
+import "./index.css";
 import { PrivateRoute } from "./utils/PrivateRoute";
 import { AuthProvider } from "./utils/AuthContext";
 import Navbar from "./components/Navbar";
@@ -17,7 +17,6 @@ import Navbar from "./components/Navbar";
 function App() {
   return (
     <div className="app-root">
-
       <AuthProvider>
         <Navbar />
 
@@ -41,8 +40,8 @@ function App() {
         </main>
       </AuthProvider>
 
-      <footer className="app-footer">
-        <small>LabSkin • Proyecto MERN • Frontend</small>
+      <footer className="kalm-footer">
+        <span>© 2025 Kälm · Bienestary Rutinas</span>
       </footer>
     </div>
   );

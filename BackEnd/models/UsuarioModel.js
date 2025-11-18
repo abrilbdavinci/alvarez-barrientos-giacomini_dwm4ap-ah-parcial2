@@ -1,22 +1,12 @@
-import mongoose  from 'mongoose';
+// BackEnd/models/UsuarioModel.js
+import mongoose from 'mongoose';
 
-const Schema = mongoose.Schema;
+const { Schema, model } = mongoose;
 
-<<<<<<< HEAD
+const UsuarioSchema = new Schema({
+  nombre: { type: String, trim: true, default: '' },
+  email: { type: String, required: true, unique: true, trim: true, lowercase: true },
+  password: { type: String, required: true }
+}, { timestamps: true });
 
-const esquema = new Schema({
-    nombre: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
-=======
-const esquema = new Schema({
-    nombre: String,
-    email: String,
-    password: String
->>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
-});
-
-const User = mongoose.model('User', esquema);
-
-
-export default User;
+export default model('User', UsuarioSchema); // colección: users

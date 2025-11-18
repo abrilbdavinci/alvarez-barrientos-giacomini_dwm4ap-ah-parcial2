@@ -1,58 +1,38 @@
-// controllers/UsuarioController.js
+// BackEnd/controllers/UsuarioController.js
 import jwt from 'jsonwebtoken';
-<<<<<<< HEAD
 import bcrypt from 'bcryptjs';
-=======
->>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
+import { validationResult } from 'express-validator';
 import User from '../models/UsuarioModel.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret-demo';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 
 /**
- * Crear nuevo usuario (contraseña en texto plano)
+ * Crear nuevo usuario (contraseña encriptada)
  * POST /api/usuarios
  */
-<<<<<<< HEAD
-import { validationResult } from 'express-validator';
-
 const newUser = async (req, res, next) => {
   try {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    const { nombre, email, password } = req.body;
-=======
-const newUser = async (req, res, next) => {
-  try {
-    const { nombre, email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({ msg: 'Email y password requeridos' });
-    }
->>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+
+    const { nombre = '', email, password } = req.body || {};
+    if (!email || !password) return res.status(400).json({ msg: 'Email y password requeridos' });
+
+    const emailNorm = String(email).toLowerCase().trim();
 
     // Evitar duplicados
-    const existing = await User.findOne({ email: email.toLowerCase().trim() });
-    if (existing) {
-      return res.status(409).json({ msg: 'El email ya está registrado' });
-    }
+    const existing = await User.findOne({ email: emailNorm });
+    if (existing) return res.status(409).json({ msg: 'El email ya está registrado' });
 
-<<<<<<< HEAD
     // Encriptar contraseña
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const usuario = new User({
       nombre: nombre || '',
-      email: email.toLowerCase().trim(),
+      email: emailNorm,
       password: hashedPassword,
-=======
-    const usuario = new User({
-      nombre: nombre || '',
-      email: email.toLowerCase().trim(),
-      password, // texto plano
->>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
     });
 
     const data = await usuario.save();
@@ -61,48 +41,30 @@ const newUser = async (req, res, next) => {
     const { password: _p, ...safe } = data.toObject();
     return res.status(201).json({ msg: 'Usuario creado', data: safe });
   } catch (err) {
-    next(err);
+    // dejar que el error pase al error handler global
+    return next(err);
   }
 };
 
 /**
- * Login de usuario (contraseña en texto plano)
+ * Login de usuario
  * POST /api/usuarios/login
  */
 const loginUser = async (req, res, next) => {
   try {
-<<<<<<< HEAD
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    console.log('[LOGIN] body:', req.body);
-    const { email, password } = req.body;
-=======
-    console.log('[LOGIN] body:', req.body);
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({ msg: 'Email y password requeridos' });
-    }
->>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-    const user = await User.findOne({ email: email.toLowerCase().trim() });
-    if (!user) {
-      console.log('[LOGIN] usuario no encontrado:', email);
-      return res.status(401).json({ msg: 'Credenciales inválidas' });
-    }
+    const { email, password } = req.body || {};
+    if (!email || !password) return res.status(400).json({ msg: 'Email y password requeridos' });
 
-<<<<<<< HEAD
+    const emailNorm = String(email).toLowerCase().trim();
+    const user = await User.findOne({ email: emailNorm });
+    if (!user) return res.status(401).json({ msg: 'Credenciales inválidas' });
+
     // Comparar contraseña encriptada
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-=======
-    // Comparar texto plano
-    if (user.password !== password) {
->>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
-      console.log('[LOGIN] password incorrecta para:', email);
-      return res.status(401).json({ msg: 'Credenciales inválidas' });
-    }
+    if (!isMatch) return res.status(401).json({ msg: 'Credenciales inválidas' });
 
     // Generar token
     const payload = { id: user._id, email: user.email };
@@ -116,7 +78,29 @@ const loginUser = async (req, res, next) => {
 
     return res.status(200).json({ msg: 'Login ok', token, user: userSafe });
   } catch (err) {
-    next(err);
+    return next(err);
+  }
+};
+
+/**
+ * Obtener perfil del usuario autenticado
+ * GET /api/usuarios/perfil
+ * Requiere middleware validarToken que ponga req.user (id/email)
+ */
+const getPerfil = async (req, res, next) => {
+  try {
+    // req.user debe venir del middleware validarToken
+    const userFromToken = req.user;
+    if (!userFromToken || !userFromToken.id) {
+      return res.status(403).json({ msg: 'Token requerido o inválido' });
+    }
+
+    const user = await User.findById(userFromToken.id).select('-password');
+    if (!user) return res.status(404).json({ msg: 'Usuario no encontrado' });
+
+    return res.status(200).json({ data: user });
+  } catch (err) {
+    return next(err);
   }
 };
 
@@ -127,9 +111,9 @@ const loginUser = async (req, res, next) => {
 const listUsers = async (req, res, next) => {
   try {
     const usuarios = await User.find().select('-password');
-    return res.json(usuarios);
+    return res.status(200).json({ data: usuarios });
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
@@ -143,7 +127,7 @@ const getUserById = async (req, res, next) => {
     if (user) return res.status(200).json({ data: user });
     return res.status(404).json({ msg: 'Usuario no encontrado' });
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
@@ -157,17 +141,23 @@ const deleteUserById = async (req, res, next) => {
     if (user) return res.status(200).json({ msg: 'Usuario eliminado' });
     return res.status(404).json({ msg: 'Usuario no encontrado' });
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
 /**
- * Actualizar usuario por ID (sin hash)
+ * Actualizar usuario por ID (sin modificar password)
  * PUT /api/usuarios/:id
  */
 const updateUserById = async (req, res, next) => {
   try {
     const body = { ...req.body };
+    // No permitir actualizar password directamente por este endpoint
+    if ('password' in body) delete body.password;
+
+    // Normalizar email si se intenta actualizar
+    if (body.email) body.email = String(body.email).toLowerCase().trim();
+
     const user = await User.findByIdAndUpdate(req.params.id, body, {
       new: true,
       runValidators: true,
@@ -176,7 +166,7 @@ const updateUserById = async (req, res, next) => {
     if (user) return res.status(200).json({ msg: 'Usuario actualizado', data: user });
     return res.status(404).json({ msg: 'Usuario no encontrado' });
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
@@ -196,14 +186,14 @@ const getUserByNombre = async (req, res, next) => {
     if (usuarios.length > 0) return res.status(200).json({ data: usuarios });
     return res.status(404).json({ msg: 'Usuario no encontrado' });
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
-// Exportar solo named exports, sin duplicados
 export {
   newUser,
   loginUser,
+  getPerfil,
   listUsers,
   getUserById,
   deleteUserById,

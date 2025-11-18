@@ -1,0 +1,275 @@
+/* index.css
+   Hoja de estilos global — responsiva y accesible
+   - Tipografías fluidas con clamp()
+   - Grid flexible con auto-fit/minmax
+   - .row-list muestra máximo 2 columnas
+   - Utilities útiles (.flex-1, .no-select, .hidden, etc.)
+*/
+
+/* ========================
+   Variables y breakpoints
+   ======================== */
+:root{
+  --bg: #f6f7fb;
+  --card: #ffffff;
+  --text: #0f1724;
+  --muted: #6b7280;
+  --accent: #29989c;
+  --accent-2: #48e7da;
+  --success: #10b981;
+  --danger: #ef4444;
+  --radius: 10px;
+  --shadow: 0 6px 18px rgba(16,24,40,0.06);
+  --glass: rgba(255,255,255,0.6);
+  --max-w: 1440px;
+  --gap: 14px;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+
+  /* breakpoints (valores usados en media queries) */
+  --bp-lg: 1200px;
+  --bp-md: 980px;
+  --bp-sm: 640px;
+}
+
+/* ========================
+   Reset / Base
+   ======================== */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* tamaño base escalable: entre ~14px y ~18px */
+  font-size: clamp(14px, 1.02vw + 0.6rem, 18px);
+}
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg, var(--bg) 0%, #eef2f7 100%);
+  color: var(--text);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-touch-callout: none;
+}
+
+/* No bloquear selección globalmente — mejor usar .no-select cuando haga falta */
+.no-select { -webkit-user-select: none; -moz-user-select: none; user-select: none; }
+
+/* ========================
+   Contenedor principal
+   ======================== */
+.app-root {
+  width: calc(100% - 32px);     /* espacio lateral mínimo */
+  max-width: var(--max-w);
+  margin: 20px auto;
+  padding: 16px;
+}
+
+/* ========================
+   Tipografía
+   ======================== */
+h1 { font-size: clamp(1.25rem, 2.4vw, 2.2rem); margin: 0 0 .5rem 0; line-height: 1.1; }
+h2 { font-size: clamp(1.05rem, 1.8vw, 1.6rem); margin: 0 0 .5rem 0; line-height: 1.15; }
+h3 { font-size: clamp(.95rem, 1.2vw, 1.1rem); margin: 0 0 .5rem 0; }
+h4 { margin: 0 0 .5rem 0; }
+
+p { margin: 0 0 10px 0; color: #394152; }
+.small { font-size: .85rem; color: var(--muted); }
+
+/* ========================
+   Utilidades Flex/Grid
+   ======================== */
+.row { display:flex; gap:var(--gap); align-items:center; }
+.col { display:flex; flex-direction:column; gap:8px; }
+.flex-1 { flex:1; min-width: 0; } /* min-width:0 evita overflow en hijos flex */
+.center { display:flex; align-items:center; justify-content:center; }
+
+.hidden { display:none !important; }
+.muted { color:var(--muted); font-size:14px; }
+
+/* ========================
+   Enlaces
+   ======================== */
+a { color: inherit; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ========================
+   Botones
+   ======================== */
+.btn {
+  display: inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(15,23,36,0.06);
+  background: white;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform .06s ease, box-shadow .12s ease;
+  box-shadow: none;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+.btn:active { transform: translateY(1px); }
+.btn:focus { outline: 3px solid rgba(31,142,241,0.14); outline-offset: 2px; }
+
+.btn.small { padding:6px 10px; font-size:0.9rem; }
+.btn.ghost { background:transparent; border:1px solid rgba(15,23,36,0.06); }
+.btn.primary { background: var(--accent); color: white; border-color: transparent; }
+.btn.green { background: var(--success); color: white; border-color: transparent; }
+.btn.red { background: var(--danger); color: white; border-color: transparent; }
+.btn.outline { background: transparent; border: 1px solid rgba(16,24,40,0.08); }
+
+/* ========================
+   Card
+   ======================== */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow);
+  margin-bottom: 14px;
+  overflow: hidden; /* evita que contenido se salga */
+}
+
+/* ========================
+   Forms
+   ======================== */
+.form { display:flex; flex-direction:column; gap:10px; }
+.form .field { display:flex; flex-direction:column; gap:6px; min-width:0; }
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #e6e9ef;
+  background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(250,250,250,0.9));
+  font-size: 0.95rem;
+  color: var(--text);
+  width: 100%;
+  box-sizing: border-box;
+}
+textarea { min-height: 90px; resize: vertical; }
+input:focus, textarea:focus, select:focus {
+  outline: 3px solid rgba(31,142,241,0.12);
+  border-color: var(--accent-2);
+}
+
+/* ========================
+   Listas y filas de lista
+   ======================== */
+
+/* Contenedor que muestra la lista en hasta 2 columnas.
+   - auto-fit para que se ajuste al ancho disponible
+   - minmax minimal para evitar columnas demasiado pequeñas */
+.row-list {
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  align-items: start;
+}
+
+/* Forzamos máximo 2 columnas en pantallas medianas+ grandes */
+@media (min-width: calc(var(--bp-sm) + 1px)) {
+  .row-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Cada fila/ítem dentro de la lista */
+.list-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,250,0.98));
+  border: 1px solid rgba(15,23,36,0.03);
+  box-shadow: var(--shadow);
+}
+
+/* Si la fila tiene contenido que debe truncarse */
+.list-row .title {
+  font-weight: 600;
+  font-size: 0.98rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0; /* importante en flex */
+}
+
+/* detalles secundarios */
+.list-row .meta { font-size: 0.9rem; color: var(--muted); }
+
+/* ========================
+   Grid helpers (general)
+   ======================== */
+.grid-2 { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--gap); }
+.grid-3 {
+  display: grid;
+  gap: var(--gap);
+  align-items: start;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+/* En pantallas grandes, si querés 2+1 (main/main/sidebar) */
+@media (min-width: calc(var(--bp-md) + 1px)) {
+  .grid-3 { grid-template-columns: 1fr 1fr minmax(220px, 320px); }
+}
+
+/* utilidad: elemento que ocupa toda la fila en grid */
+.full { grid-column: 1 / -1; }
+
+/* ========================
+   Imágenes y medios
+   ======================== */
+img, picture, video, svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+/* ========================
+   Responsive tweaks
+   ======================== */
+@media (max-width: var(--bp-md)) {
+  .app-root { padding: 14px; width: calc(100% - 28px); }
+}
+
+@media (max-width: var(--bp-sm)) {
+  .btn { padding: 8px 10px; font-size: 0.95rem; }
+  .app-root { padding: 10px; width: calc(100% - 20px); margin: 12px auto; }
+  .card { padding: 12px; }
+  /* para móviles garantizamos 1 columna en la lista */
+  .row-list { grid-template-columns: 1fr !important; }
+}
+
+/* Muy pantallas pequeñas */
+@media (max-width: 360px) {
+  h1 { font-size: 1.05rem; }
+  .grid-3, .grid-2 { gap: 10px; }
+}
+
+/* ========================
+   Accesibilidad: reduce motion
+   ======================== */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* ========================
+   Notas y recomendaciones
+   ========================
+   - Usa .row-list como wrapper donde mapeas tu array de items (productos/posts).
+     Ejemplo JSX: <div className="row-list">{items.map(i => <div className="list-row">...</div>)}</div>
+   - .list-row es la tarjeta/row de cada elemento.
+   - Si tienes tablas anchas, envuélvelas en un contenedor con overflow:auto para evitar romper el layout.
+   - Evita anchos fijos en los componentes hijos; usa flex y min-width:0 para prevenir overflow.
+*/

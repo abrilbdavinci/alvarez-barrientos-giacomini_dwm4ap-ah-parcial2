@@ -1,4 +1,4 @@
-# Kälm - Proyecto de Productos y Marcas
+# Kälm - DWM4AP P2 AH
 
 Este proyecto es una aplicación web que permite explorar productos y marcas pensadas para la rutina diaria. Incluye funcionalidades para ver productos, filtrar por marca o tipo, y crear nuevas marcas directamente desde la interfaz. Está desarrollado con **React** en el frontend y consume una API REST para obtener los datos.
 
@@ -27,7 +27,7 @@ Este proyecto es una aplicación web que permite explorar productos y marcas pen
 
 1. **Clonar el repositorio**:
 
-```bash
+
 git clone <url-del-repositorio>
 cd <nombre-del-proyecto>
 
@@ -39,7 +39,7 @@ yarn install
 
 3. **Generar archivo .env en la raíz de "BackEnd"*
 
----
+``
 
 Este proyecto está diseñado para **administración de marcas y productos** y permite añadir nuevas funcionalidades fácilmente manteniendo la coherencia en la interfaz.
 

@@ -1,6 +1,9 @@
 // controllers/UsuarioController.js
 import jwt from 'jsonwebtoken';
+<<<<<<< HEAD
 import bcrypt from 'bcryptjs';
+=======
+>>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
 import User from '../models/UsuarioModel.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret-demo';
@@ -10,6 +13,7 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
  * Crear nuevo usuario (contraseña en texto plano)
  * POST /api/usuarios
  */
+<<<<<<< HEAD
 import { validationResult } from 'express-validator';
 
 const newUser = async (req, res, next) => {
@@ -19,6 +23,14 @@ const newUser = async (req, res, next) => {
       return res.status(400).json({ errors: errors.array() });
     }
     const { nombre, email, password } = req.body;
+=======
+const newUser = async (req, res, next) => {
+  try {
+    const { nombre, email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ msg: 'Email y password requeridos' });
+    }
+>>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
 
     // Evitar duplicados
     const existing = await User.findOne({ email: email.toLowerCase().trim() });
@@ -26,6 +38,7 @@ const newUser = async (req, res, next) => {
       return res.status(409).json({ msg: 'El email ya está registrado' });
     }
 
+<<<<<<< HEAD
     // Encriptar contraseña
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -34,6 +47,12 @@ const newUser = async (req, res, next) => {
       nombre: nombre || '',
       email: email.toLowerCase().trim(),
       password: hashedPassword,
+=======
+    const usuario = new User({
+      nombre: nombre || '',
+      email: email.toLowerCase().trim(),
+      password, // texto plano
+>>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
     });
 
     const data = await usuario.save();
@@ -52,12 +71,20 @@ const newUser = async (req, res, next) => {
  */
 const loginUser = async (req, res, next) => {
   try {
+<<<<<<< HEAD
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
     console.log('[LOGIN] body:', req.body);
     const { email, password } = req.body;
+=======
+    console.log('[LOGIN] body:', req.body);
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ msg: 'Email y password requeridos' });
+    }
+>>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
 
     const user = await User.findOne({ email: email.toLowerCase().trim() });
     if (!user) {
@@ -65,9 +92,14 @@ const loginUser = async (req, res, next) => {
       return res.status(401).json({ msg: 'Credenciales inválidas' });
     }
 
+<<<<<<< HEAD
     // Comparar contraseña encriptada
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+=======
+    // Comparar texto plano
+    if (user.password !== password) {
+>>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
       console.log('[LOGIN] password incorrecta para:', email);
       return res.status(401).json({ msg: 'Credenciales inválidas' });
     }

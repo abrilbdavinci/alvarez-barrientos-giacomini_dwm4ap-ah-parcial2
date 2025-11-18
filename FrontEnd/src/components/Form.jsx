@@ -22,6 +22,7 @@ export default function Form({ fields = [], onSubmit, submitLabel = "Enviar" }) 
           <label>{f.label}</label>
           {f.type === "textarea" ? (
             <textarea name={f.name} value={form[f.name]} onChange={handleChange} />
+<<<<<<< HEAD
           ) : f.type === "select" ? (
             <select name={f.name} value={form[f.name]} onChange={handleChange}>
               <option value="">Seleccionar...</option>
@@ -31,6 +32,8 @@ export default function Form({ fields = [], onSubmit, submitLabel = "Enviar" }) 
                 </option>
               ))}
             </select>
+=======
+>>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
           ) : (
             <input name={f.name} value={form[f.name]} onChange={handleChange} type={f.type || "text"} />
           )}

@@ -33,7 +33,11 @@ export default function Home() {
 
   const [filter, setFilter] = useState(""); // texto libre
   const [marcaFilter, setMarcaFilter] = useState(""); // id o nombre de marca
+<<<<<<< HEAD
   // tipoFilter eliminado completamente
+=======
+  const [tipoFilter, setTipoFilter] = useState(""); // tipo/tags
+>>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
   const [sortKey, setSortKey] = useState("nombre"); // 'nombre' | 'precio' | 'tipo'
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(PAGE_SIZE_DEFAULT);
@@ -41,6 +45,7 @@ export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // helper: headers con auth si corresponde
+<<<<<<< HEAD
   const authHeaders = React.useCallback(() => (token ? { Authorization: `Bearer ${token}` } : {}), [token]);
 
   // fetch wrapper con manejo básico de errores
@@ -55,6 +60,22 @@ export default function Home() {
   //   }
   //   return res.json();
   // } // Eliminado porque no se usa
+=======
+  const authHeaders = () => (token ? { Authorization: `Bearer ${token}` } : {});
+
+  // fetch wrapper con manejo básico de errores
+  async function fetchJSON(url, opts = {}) {
+    const res = await fetch(url, opts);
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      const msg = body.msg || body.error || res.statusText;
+      const err = new Error(msg);
+      err.status = res.status;
+      throw err;
+    }
+    return res.json();
+  }
+>>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
 
   // cargar productos y marcas (paralelo)
   useEffect(() => {
@@ -102,9 +123,15 @@ export default function Home() {
 
     loadAll();
     return () => controller.abort();
+<<<<<<< HEAD
   }, [token, authHeaders]);
 
   // Crear marca
+=======
+  }, [token]);
+
+  // Crear marca (simple, con feedback)
+>>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
   async function createMarca(body) {
     try {
       // validación mínima
@@ -163,6 +190,7 @@ export default function Home() {
       list = list.filter((p) => {
         const nombre = (p.nombre || p.title || "").toString().toLowerCase();
         const tipo = (p.tipo || "").toString().toLowerCase();
+<<<<<<< HEAD
         const marcaNombre = (p.marca && p.marca.nombre) ? p.marca.nombre.toLowerCase() : "";
         return nombre.includes(q) || tipo.includes(q) || marcaNombre.includes(q);
       });
@@ -174,6 +202,28 @@ export default function Home() {
     }
 
     // filtro por tipo eliminado (tipoFilter ya no existe)
+=======
+        const marca = (p.marca || "").toString().toLowerCase();
+        return nombre.includes(q) || tipo.includes(q) || marca.includes(q);
+      });
+    }
+
+    // por marca (puede ser id o nombre)
+    if (marcaFilter) {
+      const mf = String(marcaFilter).toLowerCase();
+      list = list.filter(p => {
+        const marcaVal = (p.marca || p.brand || "").toString().toLowerCase();
+        const marcaId = (p.marcaId || p.brandId || "").toString().toLowerCase();
+        return marcaVal === mf || marcaId === mf || (p._id && String(p._id) === mf);
+      });
+    }
+
+    // por tipo
+    if (tipoFilter) {
+      const tf = String(tipoFilter).toLowerCase();
+      list = list.filter(p => (p.tipo || "").toString().toLowerCase() === tf);
+    }
+>>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
 
     // orden
     list.sort((a, b) => {
@@ -184,7 +234,11 @@ export default function Home() {
     });
 
     return list;
+<<<<<<< HEAD
   }, [productos, filter, marcaFilter, sortKey]);
+=======
+  }, [productos, filter, marcaFilter, tipoFilter, sortKey]);
+>>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
 
   // paginado (cliente)
   const totalItems = productosProcesados.length;
@@ -192,7 +246,11 @@ export default function Home() {
   // ensure page within bounds
   useEffect(() => {
     if (page > totalPages) setPage(totalPages);
+<<<<<<< HEAD
   }, [totalPages, page]);
+=======
+  }, [totalPages]);
+>>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
 
   const startIndex = (page - 1) * pageSize;
   const pagedProductos = productosProcesados.slice(startIndex, startIndex + pageSize);
@@ -210,8 +268,13 @@ export default function Home() {
     <div className="home-root">
       <header className="card header-card" role="banner">
         <div>
+<<<<<<< HEAD
           <h2>Kälm — El cambio comienza en tu rutina.</h2>
           <p className="muted">Productos y marcas pensadas para tu rutina diaria.</p>
+=======
+          <h2>Kälm — Espacio de bienestar</h2>
+          <p className="muted">Productos naturales, rutinas y marcas pensadas para tu calma diaria.</p>
+>>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
         </div>
 
         <div className="header-controls" role="search" aria-label="Buscar productos">
@@ -253,9 +316,14 @@ export default function Home() {
             onClick={() => setSidebarOpen((s) => !s)}
             aria-expanded={sidebarOpen}
             aria-controls="home-aside"
+<<<<<<< HEAD
             style={{ marginTop: 8 }}
           >
             {sidebarOpen ? "Ocultar opciones" : "Opciones"}
+=======
+          >
+            {sidebarOpen ? "Ocultar" : "Opciones"}
+>>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
           </button>
         </div>
       </header>
@@ -264,12 +332,16 @@ export default function Home() {
 
       <main className="home-layout">
         {/* SIDEBAR: colapsable en móvil */}
+<<<<<<< HEAD
         <aside
           id="home-aside"
           className={`home-sidebar${sidebarOpen ? " open" : ""}`}
           aria-hidden={!sidebarOpen}
           style={{ display: sidebarOpen ? undefined : "none" }}
         >
+=======
+        <aside id="home-aside" className={`home-sidebar ${sidebarOpen ? "open" : ""}`} aria-hidden={!sidebarOpen}>
+>>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
           <div className="card">
             <h4>Crear marca</h4>
             <Form
@@ -282,8 +354,11 @@ export default function Home() {
             />
           </div>
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
           <div className="card">
             <h4>Marcas</h4>
             <ListSimple

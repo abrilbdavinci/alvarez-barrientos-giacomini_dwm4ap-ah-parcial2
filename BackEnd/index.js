@@ -59,6 +59,7 @@ async function startServer() {
     // eslint-disable-next-line no-unused-vars
     app.use((err, req, res, next) => {
       console.error("Error handler:", err);
+<<<<<<< HEAD
 
       // Middleware de manejo de errores global mejorado
       let status = err.status || 500;
@@ -74,6 +75,10 @@ async function startServer() {
         message = 'Recurso no encontrado';
       }
       res.status(status).json({ error: message });
+=======
+      const status = err.status || 500;
+      res.status(status).json({ msg: err.message || "Error interno del servidor" });
+>>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
     });
 
     // 404 handler

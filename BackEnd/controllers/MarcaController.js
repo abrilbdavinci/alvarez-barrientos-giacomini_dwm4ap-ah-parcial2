@@ -7,6 +7,7 @@ const newMarca = async( request, response ) =>{
     response.status(201).json({ msg:"Marca creada", data});
 }
 
+<<<<<<< HEAD
 const listMarcas = async (request, response) => {
     // Paginación y filtro por nombre
     const { page = 1, limit = 10, nombre } = request.query;
@@ -19,6 +20,11 @@ const listMarcas = async (request, response) => {
         .limit(Number(limit));
     const total = await Marca.countDocuments(query);
     response.json({ total, page: Number(page), limit: Number(limit), data: marcas });
+=======
+const listMarcas = async (request, response) =>{
+    const marcas = await Marca.find();
+    response.json(marcas);
+>>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
 }
 
 const getMarcaById = async (request, response) => {

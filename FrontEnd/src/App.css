@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* Mejoras visuales generales */
 .card, .aside-card {
   box-shadow: 0 4px 24px rgba(31,142,241,0.07), 0 1.5px 6px rgba(16,24,40,0.04);
@@ -69,6 +70,8 @@ input:focus, textarea:focus, select:focus {
   opacity: 0;
   transform: translateX(-24px);
 }
+=======
+>>>>>>> e8f5d083fd2c79bae1034b9d916da85eb4035257
 /* App.css
    Estilos de componentes específicos del proyecto (Navbar, Cards, Products, Header, Footer)
 */
